@@ -6,7 +6,7 @@ assert()  {
     ./9cc "$input" > tmp.s
     gcc -o tmp tmp.s
     ./tmp
-    actual="$?" # $? = 0
+    actual="$?"
 
     if [ "$actual" = "$expected" ]; then
         echo "$input => $actual"
@@ -20,6 +20,6 @@ assert 0 0
 assert 42 42
 assert 255 "1 - 2"
 assert 21 '5+20-4'
-assert 41 " 12 + 34 - 5"
+assert 41 " 12 + 34 34 - 5"
 
 echo ok

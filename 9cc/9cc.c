@@ -28,6 +28,15 @@ char *user_input;
 // 現在着目しているトークン
 Token *token;
 
+// printf と同じ引数をとる
+void error(char *fmt, ...) {
+  va_list ap;
+  va_start(ap, fmt);
+  vfprintf(stderr, fmt, ap);
+  fprintf(stderr, "\n");
+  exit(1);
+}
+
 // エラー箇所を報告する
 void error_at(char *loc, char *fmt, ...) {
   va_list ap;
@@ -55,7 +64,7 @@ bool consume(char op) {
 // それ以外の場合にはエラーを報告する。
 void expect(char op) {
   if (token->kind != TK_RESERVED || token->str[0] != op)
-    error_at(op, "'%c'ではありません");
+    error_at(token->str, "'%c'ではありません", op);
   token = token->next;
 }
 
@@ -83,7 +92,8 @@ Token *new_token(TokenKind kind, Token *cur, char *str) {
 }
 
 // 入力文字列pをトークナイズしてそれを返す
-Token *tokenize(char *p) {
+Token *tokenize() {
+  char *p = user_input;
   Token head;
   head.next = NULL;
   Token *cur = &head;
@@ -106,7 +116,7 @@ Token *tokenize(char *p) {
       continue;
     }
 
-    error_at(token->str, "トークナイズできません");
+    error_at(p, "トークナイズできません");
   }
 
   new_token(TK_EOF, cur, p);
@@ -115,9 +125,11 @@ Token *tokenize(char *p) {
 
 int main(int argc, char **argv) {
   if (argc != 2) {
-    error_at(token->str, "引数の個数が正しくありません");
+    error("引数の個数が正しくありません");
     return 1;
   }
+
+  user_input = argv[1];
 
   // トークナイズする
   token = tokenize(argv[1]);
