@@ -19,5 +19,8 @@ docker build -t compilerbook https://www.sigbus.info/compilerbook/Dockerfile
 ./scripts/test.sh
 ```
 
-## 便利
-* [オンライン Compiler](https://godbolt.org/z/RyNqgE)
+## Inquiry
+* https://github.com/TomoyukiSugiyama/C_Compiler_Practice/issues/4
+
+## Tips
+* [Online Compiler](https://godbolt.org/z/RyNqgE)
