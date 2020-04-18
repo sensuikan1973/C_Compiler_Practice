@@ -1,6 +1,9 @@
 # C_Compiler_Practice
 https://www.sigbus.info/compilerbook
 
+## x86 and amd64 instruction reference
+https://www.felixcloutier.com/x86/
+
 ## Development
 
 ### setup

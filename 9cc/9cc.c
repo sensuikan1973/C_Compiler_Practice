@@ -97,6 +97,10 @@ Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
   return tok;
 }
 
+bool is_prefix(char *str, char *prefix) {
+  return strncmp(prefix, str, strlen(prefix)) == 0;
+}
+
 // 入力文字列pをトークナイズしてそれを返す
 Token *tokenize() {
   char *p = user_input;
@@ -111,7 +115,13 @@ Token *tokenize() {
       continue;
     }
 
-    if (*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '(' || *p == ')') {
+    if(is_prefix(p, "==") || is_prefix(p, "!=") || is_prefix(p, ">=") || is_prefix(p, "<=")) {
+      cur = new_token(TK_RESERVED, cur, p, 2);
+      p += 2;
+      continue;
+    }
+
+    if (*p == '+' || *p == '-'|| *p == '*' || *p == '/' || *p == '(' || *p == ')' || *p == '<' || *p == '>') {
       cur = new_token(TK_RESERVED, cur, p++, 1);
       continue;
     }
@@ -199,13 +209,13 @@ Node *relational() {
   // 大きい方を 左葉 に配置する
   for (;;) {
     if (consume("<"))
-      node = new_node(ND_LESS_OR_EQ, node, add());
-    else if (consume("<="))
       node = new_node(ND_LESS, node, add());
+    else if (consume("<="))
+      node = new_node(ND_LESS_OR_EQ, node, add());
     else if (consume(">"))
       node = new_node(ND_LESS, add(), node);
     else if (consume(">="))
-      node = new_node(ND_LESS, add(), node);
+      node = new_node(ND_LESS_OR_EQ, add(), node);
     else
       return node;
   }
@@ -282,6 +292,26 @@ void gen(Node *node) {
   case ND_DIV:
     printf("  cqo\n");
     printf("  idiv rdi\n");
+    break;
+  case ND_EQ:
+    printf("  cmp rax, rdi\n");
+    printf("  sete al\n");
+    printf("  movzb rax, al\n");
+    break;
+  case ND_NOT_EQ:
+    printf("  cmp rax, rdi\n");
+    printf("  setne al\n");
+    printf("  movzb rax, al\n");
+    break;
+  case ND_LESS:
+    printf("  cmp rax, rdi\n");
+    printf("  setl al\n");
+    printf("  movzb rax, al\n");
+    break;
+  case ND_LESS_OR_EQ:
+    printf("  cmp rax, rdi\n");
+    printf("  setle al\n");
+    printf("  movzb rax, al\n");
     break;
   }
 
