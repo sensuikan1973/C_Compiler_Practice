@@ -12,9 +12,8 @@ typedef enum {
   TK_EOF,      // 入力の終わりを表すトークン
 } TokenKind;
 
-typedef struct Token Token;
-
 // トークン型
+typedef struct Token Token;
 struct Token {
   TokenKind kind; // トークンの型
   Token *next;    // 次の入力トークン
@@ -121,7 +120,10 @@ Token *tokenize() {
       continue;
     }
 
-    if (*p == '+' || *p == '-'|| *p == '*' || *p == '/' || *p == '(' || *p == ')' || *p == '<' || *p == '>') {
+    if (*p == '+' || *p == '-' ||
+        *p == '*' || *p == '/' ||
+        *p == '(' || *p == ')' ||
+        *p == '<' || *p == '>') {
       cur = new_token(TK_RESERVED, cur, p++, 1);
       continue;
     }
@@ -153,9 +155,8 @@ typedef enum {
   ND_LESS_OR_EQ, // <=
 } NodeKind;
 
-typedef struct Node Node;
-
 // 抽象構文木のノードの型
+typedef struct Node Node;
 struct Node {
   NodeKind kind; // ノードの型
   Node *lhs;     // 左辺
