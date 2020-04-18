@@ -119,7 +119,7 @@ Token *tokenize() {
     if (isdigit(*p)) {
       cur = new_token(TK_NUM, cur, p, 0);
       cur->val = strtol(p, &p, 10);
-      cur->len = strlen(p);
+      // digit の場合、長さなんぞどうでもいので、cur->len は埋めてない
       continue;
     }
 
@@ -137,6 +137,10 @@ typedef enum {
   ND_MUL, // *
   ND_DIV, // /
   ND_NUM, // 整数
+  ND_EQ, // ==
+  ND_NOT_EQ, // !=
+  ND_LESS , // <
+  ND_LESS_OR_EQ, // <=
 } NodeKind;
 
 typedef struct Node Node;
@@ -165,11 +169,49 @@ Node *new_node_num(int val) {
 }
 
 Node *expr();
+Node *equality();
+Node *relational();
+Node *add();
 Node *mul();
 Node *unary();
 Node *primary();
 
 Node *expr() {
+  equality();
+}
+
+Node *equality() {
+  Node *node = relational();
+
+  for (;;) {
+    if (consume("=="))
+      node = new_node(ND_EQ, node, relational());
+    else if (consume("!="))
+      node = new_node(ND_NOT_EQ, node, relational());
+    else
+      return node;
+  }
+}
+
+Node *relational() {
+  Node *node = add();
+
+  // 大きい方を 左葉 に配置する
+  for (;;) {
+    if (consume("<"))
+      node = new_node(ND_LESS_OR_EQ, node, add());
+    else if (consume("<="))
+      node = new_node(ND_LESS, node, add());
+    else if (consume(">"))
+      node = new_node(ND_LESS, add(), node);
+    else if (consume(">="))
+      node = new_node(ND_LESS, add(), node);
+    else
+      return node;
+  }
+}
+
+Node *add() {
   Node *node = mul();
 
   for (;;) {
