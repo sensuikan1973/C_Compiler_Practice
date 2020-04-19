@@ -57,4 +57,8 @@ assert 2 'xy = 2;'
 assert 2 'x_y_zabc = 2;'
 assert 123 'a3_bcd = 123;'
 
+assert 2 'return 2;'
+assert 3 'var = 1 + 2; return var;'
+assert 3 'var = 1 + 2;return var;'
+
 echo ok

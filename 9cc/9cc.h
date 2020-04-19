@@ -36,6 +36,7 @@ typedef enum {
   ND_NOT_EQ,     // !=
   ND_LESS,       // <
   ND_LESS_OR_EQ, // <=
+  ND_RETURN,     // return
 } NodeKind;
 
 // 抽象構文木のノードの型

@@ -1,5 +1,6 @@
 #include "9cc.h"
 
+// NOTE: '_' も含む
 static bool is_alpha(char *ch) {
   return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch == '_';
 }
@@ -22,7 +23,7 @@ static Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
   return tok;
 }
 
-// 入力文字列pをトークナイズしてそれを返す
+// 入力値(user_input)をトークナイズする
 Token *tokenize() {
   char *p = user_input;
   Token head;
@@ -33,6 +34,15 @@ Token *tokenize() {
     // 空白文字をスキップ
     if (isspace(*p)) {
       p++;
+      continue;
+    }
+
+    // return
+    if (strncmp(p, "return", 6) == 0 &&
+        !is_alpha_or_num(p[6]) // "returnX" みたいなのは許さない
+    ) {
+      cur = new_token(TK_RESERVED, cur, p, 6);
+      p += 6;
       continue;
     }
 

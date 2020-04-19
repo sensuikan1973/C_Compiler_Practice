@@ -11,6 +11,15 @@ void gen_lval(Node *node) {
 
 void gen(Node *node) {
   switch (node->kind) {
+  case ND_RETURN:
+    gen(node->lhs);
+    // 左葉の返り値がスタックトップに残した値をポップして、
+    // RAX にセットしてから ret する
+    printf("  pop rax\n");
+    printf("  mov rsp, rbp\n");
+    printf("  pop rbp\n");
+    printf("  ret\n");
+    return;
   case ND_NUM:
     printf("  push %d\n", node->val);
     return;
