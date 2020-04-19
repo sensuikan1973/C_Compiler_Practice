@@ -17,7 +17,7 @@ static void expect(char *op) {
   if (token->kind != TK_RESERVED ||
       strlen(op) != token->len ||
       memcmp(token->str, op, token->len))
-    error_at(token->str, "'%c'ではありません", op);
+    error_at(token->str, "%sではありません", op);
   token = token->next;
 }
 
@@ -50,6 +50,9 @@ static Node *new_node_num(int val) {
   return node;
 }
 
+static Node *stmt();
+static Node *expr();
+static Node *assign();
 static Node *equality();
 static Node *relational();
 static Node *add();
@@ -57,8 +60,31 @@ static Node *mul();
 static Node *unary();
 static Node *primary();
 
+Node *program() {
+  int i = 0;
+  while (!at_eof()) {
+    code[i++] = stmt();
+  }
+  code[i] = NULL; // 末尾を NULL で表現する
+}
+
+Node *stmt() {
+  Node *node = expr();
+  // FIXME: まだ使わないので一旦コメントアウト
+  // expect(";");
+  return node;
+}
+
 Node *expr() {
-  equality();
+  return assign();
+}
+
+Node *assign() {
+  Node *node = equality();
+  if (consume("=")) {
+    node = new_node(ND_ASSIGN, node, assign());
+  }
+  return node;
 }
 
 Node *equality() {
@@ -77,7 +103,7 @@ Node *equality() {
 Node *relational() {
   Node *node = add();
 
-  // 大きい方を 左葉 に配置する
+  // NOTE: 大きい方を 左葉 に配置する
   for (;;) {
     if (consume("<"))
       node = new_node(ND_LESS, node, add());
