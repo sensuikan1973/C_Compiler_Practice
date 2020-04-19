@@ -9,4 +9,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: cd 9cc && make && ./test.sh
+      - run: cd 9cc && make test
