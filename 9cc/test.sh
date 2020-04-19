@@ -49,6 +49,8 @@ assert 0 '-1 <= -2;'
 
 assert 0 'a = 0;'
 assert 255 'b = 255;'
-assert 1 'z = 1;'
+assert 1 'z  =    1;'
+assert 1 'z=1;'
+assert 123 'x=y=z=123;'
 
 echo ok
