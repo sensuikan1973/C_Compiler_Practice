@@ -54,5 +54,7 @@ assert 1 'z=1;'
 assert 123 'x=y=z=123;'
 
 assert 2 'xy = 2;'
+assert 2 'x_y_zabc = 2;'
+assert 123 'a3_bcd = 123;'
 
 echo ok
