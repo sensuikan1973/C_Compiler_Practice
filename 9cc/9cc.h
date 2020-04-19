@@ -43,3 +43,15 @@ struct Node {
   Node *rhs;     // 右辺
   int val;       // kindがND_NUMの場合のみ使う
 };
+
+/* 関数定義 */
+void error(char *fmt, ...);
+void error_at(char *loc, char *fmt, ...);
+
+/* グローバル変数 */
+
+// 入力プログラム
+char *user_input;
+
+// 現在着目しているトークン
+Token *token;
