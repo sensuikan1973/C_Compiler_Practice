@@ -1,4 +1,5 @@
-[![Format and Test](https://github.com/sensuikan1973/C_Compiler_Practice/workflows/Format_and_Test/badge.svg)](https://github.com/sensuikan1973/C_Compiler_Practice/actions)
+[![Format](https://github.com/sensuikan1973/C_Compiler_Practice/workflows/Format/badge.svg)](https://github.com/sensuikan1973/C_Compiler_Practice/actions)
+[![Format](https://github.com/sensuikan1973/C_Compiler_Practice/workflows/Test/badge.svg)](https://github.com/sensuikan1973/C_Compiler_Practice/actions)
 
 # C_Compiler_Practice
 

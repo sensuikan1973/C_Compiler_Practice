@@ -1,5 +1,4 @@
-name: Format_and_Test
-
+name: Format
 on:
   push:
     branches: [master]
@@ -11,5 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: DoozyX/clang-format-lint-action@v0.5
-      # - name: test
-      #   run: ./scripts/test.sh
+        with:
+          clangFormatVersion: 9
