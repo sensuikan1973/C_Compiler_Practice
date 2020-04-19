@@ -11,6 +11,16 @@ static bool consume(char *op) {
   return true;
 }
 
+// 次のトークンが変数の時には、トークンを1つ読み進めて真を返す。それ以外の場合には偽を返す。
+static Token *consume_indent() {
+  if (token->kind == TK_IDENT) {
+    Token *result = token;
+    token = token->next;
+    return result;
+  }
+  return NULL;
+}
+
 // 次のトークンが期待している記号のときには、トークンを1つ読み進める。
 // それ以外の場合にはエラーを報告する。
 static void expect(char *op) {
@@ -70,8 +80,7 @@ Node *program() {
 
 Node *stmt() {
   Node *node = expr();
-  // FIXME: まだ使わないので一旦コメントアウト
-  // expect(";");
+  expect(";");
   return node;
 }
 
@@ -157,6 +166,14 @@ Node *primary() {
   if (consume("(")) {
     Node *node = expr();
     expect(")");
+    return node;
+  }
+
+  Token *tok = consume_indent();
+  if (tok) {
+    Node *node = calloc(1, sizeof(Node));
+    node->kind = ND_LVAR;
+    node->offset = (tok->str[0] - 'a' + 1) * 8;
     return node;
   }
 

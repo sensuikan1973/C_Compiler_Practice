@@ -28,7 +28,7 @@ Token *tokenize() {
       continue;
     }
 
-    if(is_prefix(p, "==") || is_prefix(p, "!=") || is_prefix(p, ">=") || is_prefix(p, "<=")) {
+    if (is_prefix(p, "==") || is_prefix(p, "!=") || is_prefix(p, ">=") || is_prefix(p, "<=")) {
       cur = new_token(TK_RESERVED, cur, p, 2);
       p += 2;
       continue;
@@ -38,7 +38,7 @@ Token *tokenize() {
         *p == '*' || *p == '/' ||
         *p == '(' || *p == ')' ||
         *p == '<' || *p == '>' ||
-        *p == ';') {
+        *p == ';' || *p == '=') {
       cur = new_token(TK_RESERVED, cur, p++, 1);
       continue;
     }
