@@ -1,4 +1,4 @@
-name: Test
+name: Format_and_Test
 
 on:
   push:
