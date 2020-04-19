@@ -3,8 +3,7 @@
 // 次のトークンが期待している記号のときには、トークンを1つ読み進めて
 // 真を返す。それ以外の場合には偽を返す。
 static bool consume(char *op) {
-  if (token->kind != TK_RESERVED ||
-      strlen(op) != token->len ||
+  if (token->kind != TK_RESERVED || strlen(op) != token->len ||
       memcmp(token->str, op, token->len))
     return false;
   token = token->next;
@@ -24,8 +23,7 @@ static Token *consume_indent() {
 // 次のトークンが期待している記号のときには、トークンを1つ読み進める。
 // それ以外の場合にはエラーを報告する。
 static void expect(char *op) {
-  if (token->kind != TK_RESERVED ||
-      strlen(op) != token->len ||
+  if (token->kind != TK_RESERVED || strlen(op) != token->len ||
       memcmp(token->str, op, token->len))
     error_at(token->str, "%sではありません", op);
   token = token->next;
@@ -41,9 +39,7 @@ static int expect_number() {
   return val;
 }
 
-bool at_eof() {
-  return token->kind == TK_EOF;
-}
+bool at_eof() { return token->kind == TK_EOF; }
 
 static Node *new_node(NodeKind kind, Node *lhs, Node *rhs) {
   Node *node = calloc(1, sizeof(Node));
@@ -84,9 +80,7 @@ Node *stmt() {
   return node;
 }
 
-Node *expr() {
-  return assign();
-}
+Node *expr() { return assign(); }
 
 Node *assign() {
   Node *node = equality();

@@ -6,9 +6,10 @@
 #include <string.h>
 
 #if DEBUG
-#define DEBUG_PRINT() do{\
-printf("error at %s:%d\n",__FILE__,__LINE__);\
-}while(0);
+#define DEBUG_PRINT()                                                          \
+  do {                                                                         \
+    printf("error at %s:%d\n", __FILE__, __LINE__);                            \
+  } while (0);
 #else
 #define DEBUG_PRINT() ;
 #endif
@@ -16,7 +17,7 @@ printf("error at %s:%d\n",__FILE__,__LINE__);\
 // トークンの種類
 typedef enum {
   TK_RESERVED, // 記号
-  TK_IDENT, // 識別子
+  TK_IDENT,    // 識別子
   TK_NUM,      // 整数トークン
   TK_EOF,      // 入力の終わりを表すトークン
 } TokenKind;
@@ -28,21 +29,21 @@ struct Token {
   Token *next;    // 次の入力トークン
   int val;        // kindがTK_NUMの場合、その数値
   char *str;      // トークン文字列
-  int len;        // トークンの長さ。トークンでなければ 0 を入れる。
+  int len; // トークンの長さ。トークンでなければ 0 を入れる。
 };
 
 // 抽象構文木のノードの種類
 typedef enum {
-  ND_ADD, // +
-  ND_SUB, // -
-  ND_MUL, // *
-  ND_DIV, // /
-  ND_ASSIGN, // = 代入
-  ND_LVAR, // ローカル変数
-  ND_NUM, // 整数
-  ND_EQ, // ==
-  ND_NOT_EQ, // !=
-  ND_LESS , // <
+  ND_ADD,        // +
+  ND_SUB,        // -
+  ND_MUL,        // *
+  ND_DIV,        // /
+  ND_ASSIGN,     // = 代入
+  ND_LVAR,       // ローカル変数
+  ND_NUM,        // 整数
+  ND_EQ,         // ==
+  ND_NOT_EQ,     // !=
+  ND_LESS,       // <
   ND_LESS_OR_EQ, // <=
 } NodeKind;
 
@@ -60,7 +61,8 @@ struct Node {
   // NOTE:
   // ローカル変数のベースポインタからのオフセットを表す。
   // 今のところ、ローカル変数は名前で決まる固定の位置にあるものとしているから。
-  // 変数 'a' は RBP-8, 'b' は RBP-16 という感じで固定するとしているので、オフセットは構文解析の段階で決定できる。
+  // 変数 'a' は RBP-8, 'b' は RBP-16
+  // という感じで固定するとしているので、オフセットは構文解析の段階で決定できる。
   int offset;
 };
 
