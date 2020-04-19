@@ -1,11 +1,11 @@
 #include "9cc.h"
 
-bool is_prefix(char *str, char *prefix) {
+static bool is_prefix(char *str, char *prefix) {
   return strncmp(prefix, str, strlen(prefix)) == 0;
 }
 
 // 新しいトークンを作成してcurに繋げる
-Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
+static Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
   Token *tok = calloc(1, sizeof(Token));
   tok->kind = kind;
   tok->str = str;
