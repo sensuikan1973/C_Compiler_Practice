@@ -1,5 +1,15 @@
 #include "9cc.h"
 
+// 変数を名前で検索する
+static LVar *find_lvar(Token *tok) {
+  for (LVar *var = locals; var; var = var->next) {
+    if (var->len == tok->len && !memcmp(tok->str, var->name, var->len)) {
+      return var;
+    }
+  }
+  return NULL;
+}
+
 // 次のトークンが期待している記号のときには、トークンを1つ読み進めて
 // 真を返す。それ以外の場合には偽を返す。
 static bool consume(char *op) {
@@ -167,7 +177,23 @@ Node *primary() {
   if (tok) {
     Node *node = calloc(1, sizeof(Node));
     node->kind = ND_LVAR;
-    node->offset = (tok->str[0] - 'a' + 1) * 8;
+
+    LVar *lvar = find_lvar(tok);
+    if (lvar) {
+      node->offset = lvar->offset;
+    } else {
+      lvar = calloc(1, sizeof(LVar));
+      lvar->next = locals;
+      lvar->name = tok->str;
+      lvar->len = tok->len;
+      if (locals == NULL) {
+        lvar->offset = 0;
+      } else {
+        lvar->offset = locals->offset + 8;
+      }
+      node->offset = lvar->offset;
+      locals = lvar;
+    }
     return node;
   }
 

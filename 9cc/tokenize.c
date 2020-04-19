@@ -1,5 +1,13 @@
 #include "9cc.h"
 
+static bool is_alpha(char *ch) {
+  return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z') || ch == '_';
+}
+
+static bool is_alpha_or_num(char *ch) {
+  return is_alpha(ch) || ('0' <= ch && ch <= '9');
+}
+
 static bool is_prefix(char *str, char *prefix) {
   return strncmp(prefix, str, strlen(prefix)) == 0;
 }
@@ -41,16 +49,21 @@ Token *tokenize() {
       continue;
     }
 
-    // 変数は、とりあえず 1 文字のみ対応。
-    if ('a' <= *p && *p <= 'z') {
-      cur = new_token(TK_IDENT, cur, p++, 1);
-      continue;
-    }
-
+    // 数値
     if (isdigit(*p)) {
       cur = new_token(TK_NUM, cur, p, 0);
       cur->val = strtol(p, &p, 10);
       // digit の場合、長さなんぞどうでもいので、cur->len は埋めてない
+      continue;
+    }
+
+    // 変数
+    if (is_alpha(*p)) {
+      char *str = p++;
+      while (is_alpha_or_num(*p)) {
+        p++;
+      }
+      cur = new_token(TK_IDENT, cur, str, p - str);
       continue;
     }
 
