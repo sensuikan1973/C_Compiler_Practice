@@ -4,6 +4,7 @@ OBJS=$(SRCS:.c=.o)
 
 9cc: $(OBJS)
 	cc -o 9cc $(OBJS) $(LDFLAGS)
+	# cc -c -o $(DIST)/tokenize.o tokenize.c
 
 $(OBJS): 9cc.h
 
