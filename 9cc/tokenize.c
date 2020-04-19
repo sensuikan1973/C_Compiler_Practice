@@ -42,6 +42,12 @@ Token *tokenize() {
       continue;
     }
 
+    // 変数は、とりあえず 1 文字のみ対応。
+    if ('a' <= *p && *p <= 'z') {
+      cur = new_token(TK_IDENT, cur, p++, 1);
+      continue;
+    }
+
     if (isdigit(*p)) {
       cur = new_token(TK_NUM, cur, p, 0);
       cur->val = strtol(p, &p, 10);
