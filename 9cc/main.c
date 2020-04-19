@@ -3,7 +3,6 @@
 #define DEBUG
 
 int main(int argc, char **argv) {
-  DEBUG_PRINT();
   if (argc != 2) {
     error("引数の個数が正しくありません");
     return 1;

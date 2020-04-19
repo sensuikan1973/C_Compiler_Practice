@@ -5,15 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if DEBUG
-#define DEBUG_PRINT()                                                          \
-  do {                                                                         \
-    printf("error at %s:%d\n", __FILE__, __LINE__);                            \
-  } while (0);
-#else
-#define DEBUG_PRINT() ;
-#endif
-
 // トークンの種類
 typedef enum {
   TK_RESERVED, // 記号
