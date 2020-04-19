@@ -50,6 +50,9 @@ void error_at(char *loc, char *fmt, ...);
 
 void gen(Node *node);
 
+Token *tokenize();
+Node *expr();
+
 /* グローバル変数 */
 
 // 入力プログラム
