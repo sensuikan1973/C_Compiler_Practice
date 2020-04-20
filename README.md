@@ -7,7 +7,7 @@ https://www.sigbus.info/compilerbook
 
 ## x86 and amd64 instruction reference
 
-https://www.felixcloutier.com/x86/
+- x86: https://www.felixcloutier.com/x86/
 
 ## Development with Docker
 ref. https://www.sigbus.info/compilerbook#docker
